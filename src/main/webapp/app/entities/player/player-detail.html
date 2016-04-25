@@ -1,0 +1,38 @@
+
+<div>
+    <h2><span translate="basketballOauth2Jhipster3App.player.detail.title">Player</span> {{vm.player.id}}</h2>
+    <hr>
+    <dl class="dl-horizontal">
+        <dt><span translate="basketballOauth2Jhipster3App.player.name">Name</dt></dt>
+        <dd>
+            <span>{{vm.player.name}}<span>
+        </dd>
+        <hr>
+        <dt><span translate="basketballOauth2Jhipster3App.player.baskets">Baskets</dt></dt>
+        <dd>
+            <span>{{vm.player.baskets}}<span>
+        </dd>
+        <hr>
+        <dt><span translate="basketballOauth2Jhipster3App.player.rebotes">Rebotes</dt></dt>
+        <dd>
+            <span>{{vm.player.rebotes}}<span>
+        </dd>
+        <hr>
+        <dt><span translate="basketballOauth2Jhipster3App.player.asistencias">Asistencias</dt></dt>
+        <dd>
+            <span>{{vm.player.asistencias}}<span>
+        </dd>
+        <hr>
+        <dt><span translate="basketballOauth2Jhipster3App.player.posicionCampo">PosicionCampo</dt></dt>
+        <dd>
+            <span translate="{{'basketballOauth2Jhipster3App.PosicionesJugadores.' + vm.player.posicionCampo}}">{{vm.player.posicionCampo}}</span>
+        </dd>
+        <hr>
+    </dl>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

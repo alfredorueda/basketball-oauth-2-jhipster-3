@@ -1,0 +1,10 @@
+{
+    "basketballOauth2Jhipster3App": {
+        "PosicionesJugadores" : {
+            "null": "",
+            "Alero": "Alero",
+            "Pivot": "Pivot",
+            "Base": "Base"
+        }
+    }
+}
