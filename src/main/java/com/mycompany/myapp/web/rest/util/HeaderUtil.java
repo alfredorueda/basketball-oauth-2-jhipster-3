@@ -31,6 +31,7 @@ public class HeaderUtil {
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-basketballOauth2Jhipster3App-error", "error." + errorKey);
         headers.add("X-basketballOauth2Jhipster3App-params", entityName);
+        headers.add("X-basketballOauth2Jhipster3App-error-description", defaultMessage);
         return headers;
     }
 }

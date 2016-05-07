@@ -2,23 +2,27 @@ package com.mycompany.myapp.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.mycompany.myapp.domain.Player;
+import com.mycompany.myapp.repository.PlayerCriteriaRepository;
 import com.mycompany.myapp.repository.PlayerRepository;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 /**
  * REST controller for managing Player.
  */
@@ -27,10 +31,13 @@ import java.util.Optional;
 public class PlayerResource {
 
     private final Logger log = LoggerFactory.getLogger(PlayerResource.class);
-        
+
     @Inject
     private PlayerRepository playerRepository;
-    
+
+    @Inject
+    private PlayerCriteriaRepository playerCriteriaRepository;
+
     /**
      * POST  /players : Create a new player.
      *
@@ -126,6 +133,45 @@ public class PlayerResource {
         log.debug("REST request to delete Player : {}", id);
         playerRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("player", id.toString())).build();
+    }
+
+    @RequestMapping(method = GET, value = "/players/byfilters")
+    @Timed
+    @Transactional
+    public ResponseEntity<List<Player>> getPlayersByParams(
+        @RequestParam(value = "id", required = false) Long id,
+        @RequestParam(value = "posicionCampo", required = false) String posicionCampo,
+        @RequestParam(value = "baskets", required = false) Integer baskets,
+        @RequestParam(value = "rebotes", required = false) Integer rebotes
+    ) {
+        Map<String, Object> params = new HashMap<>();
+
+        if (id != null) {
+            params.put("id", id);
+        }
+
+        if (posicionCampo != null) {
+            params.put("posicionCampo", posicionCampo);
+        }
+
+        if (baskets != null) {
+            params.put("baskets", baskets);
+        }
+
+        if (rebotes != null) {
+            params.put("rebotes", rebotes);
+        }
+
+        if (params.isEmpty()) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("player", "filtersEmpty", "You must at least add one filter")).body(null);
+        }
+
+        List<Player> result = playerCriteriaRepository.findByParameters(params);
+
+        return new ResponseEntity<>(
+            result,
+            HttpStatus.OK);
+
     }
 
 }
